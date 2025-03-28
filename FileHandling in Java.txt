@@ -1,0 +1,142 @@
+File handling in Java is done using the java.io and java.nio.file packages. You can perform operations like reading, writing, and renaming files. Here’s how you can do each:
+
+1. Reading a File (Using BufferedReader)
+java
+Copy
+Edit
+import java.io.*;
+
+public class FileReadExample {
+    public static void main(String[] args) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("example.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+Uses BufferedReader for efficient reading.
+
+Reads the file line by line.
+
+2. Writing to a File (Using BufferedWriter)
+java
+Copy
+Edit
+import java.io.*;
+
+public class FileWriteExample {
+    public static void main(String[] args) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("example.txt"))) {
+            writer.write("Hello, World!");
+            writer.newLine();
+            writer.write("This is a file handling example in Java.");
+            System.out.println("File written successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+Uses BufferedWriter for efficient writing.
+
+newLine() ensures proper line separation.
+
+3. Renaming a File (Using File Class)
+java
+Copy
+Edit
+import java.io.File;
+
+public class FileRenameExample {
+    public static void main(String[] args) {
+        File oldFile = new File("example.txt");
+        File newFile = new File("renamed_example.txt");
+
+        if (oldFile.renameTo(newFile)) {
+            System.out.println("File renamed successfully.");
+        } else {
+            System.out.println("File rename failed.");
+        }
+    }
+}
+Uses renameTo() method of File class.
+
+Returns true if renaming is successful.
+
+4. Reading and Writing a File Using Files (Modern Approach)
+java
+Copy
+Edit
+import java.nio.file.*;
+import java.io.IOException;
+import java.util.List;
+
+public class FileReadWriteExample {
+    public static void main(String[] args) throws IOException {
+        Path filePath = Paths.get("example.txt");
+
+        // Writing to file
+        Files.write(filePath, List.of("Line 1", "Line 2"), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+
+        // Reading from file
+        List<String> lines = Files.readAllLines(filePath);
+        lines.forEach(System.out::println);
+    }
+}
+Uses Files.write() for writing and Files.readAllLines() for reading.
+
+More modern and convenient approach.
+1. Reading a File (FileReader, BufferedReader, Files.readAllLines())
+Purpose:
+
+Data Retrieval → Retrieve stored data from a file for further processing.
+
+Configuration Loading → Load settings from configuration files (e.g., .properties, .json).
+
+Logging & Analysis → Read logs for debugging or analyzing system behavior.
+
+Parsing Data → Read structured files like CSV, JSON, or XML for data processing.
+
+Example Use Case:
+
+A web application reads user credentials from a file to authenticate users.
+
+A stock market application reads historical data for trend analysis.
+
+2. Writing to a File (FileWriter, BufferedWriter, Files.write())
+Purpose:
+
+Data Storage → Save information like user details, reports, logs, or transaction records.
+
+Logging → Maintain logs for debugging and monitoring system activity.
+
+Generating Reports → Write processed data into text files for reporting.
+
+Configuration Saving → Store settings or preferences for applications.
+
+Example Use Case:
+
+A bank application writes transaction details into a log file.
+
+A program exports a list of employees into a CSV file.
+
+3. Renaming a File (renameTo(), Files.move())
+Purpose:
+
+Organizing Files → Rename files to maintain a structured naming convention.
+
+Version Control → Rename older files (e.g., report_v1.txt to report_v2.txt).
+
+Security & Privacy → Mask sensitive files by renaming them dynamically.
+
+Backup & Archiving → Rename files before archiving to avoid overwriting.
+
+Example Use Case:
+
+A backup system renames files with timestamps before storing them.
+
+A software application renames error logs based on the date.
+
